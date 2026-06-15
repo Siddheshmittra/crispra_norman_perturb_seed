@@ -1,0 +1,45 @@
+# Apples-to-apples CRISPRa run: recompute per-guide effects from the Norman
+# single-cell atlas using the SAME recipe as the Hartman et al. CRISPRi pipeline
+# (CP10k -> log1p -> pseudobulk -> log2FC vs non-targeting, pseudocount 0.01),
+# with the sign flipped for activation (log2FC > +0.5). Mirrors the paper's
+# parameters (top 5,000 features, 100 PCs, 20 NN + asymmetrical, >=20 cells,
+# seed >=5 bp, +/-2 kb search window).
+
+dataset_name: norman_hs27_crispra_singlecell
+mode: crispra
+
+adata_path: ../data/raw/fibroblast_CRISPRa_final_pop_singlets_normalized_log1p.h5ad
+input_level: single_cell
+expm1_input: true                  # .X is log1p-normalized; recover counts first
+sgrna_csv: ../guide_libraries/sgrna_norman.csv
+output_csv: ../outputs/candidates/norman_crispra_singlecell_off_target_candidates.csv
+output_dir: ../outputs/candidates
+
+tss_map_csv: ../vendor/perturb_seed/tss_map.csv
+genome_fa: ../data/ref/hg38.fa
+genome_fai: ../data/ref/hg38.fa.fai
+
+obs_guide_col: guide_identity
+obs_gene_col: guide_target
+nt_label: "non"                    # control guide_target label (non_targeting_*)
+dataset_type: single_guide
+
+# CRISPRa activation thresholds, in the SAME log2FC units as the CRISPRi run.
+kd_lfc_thresh: 0.5                 # on-target activation gate  (log2FC > +0.5)
+offtarget_lfc_thresh: 0.5
+filter_offtarget_effects: false   # keep ALL neighbor events; threshold downstream
+require_source_guide_effective: false  # match CRISPRi reproduce (validated_target only)
+log2fc_pseudocount: 0.01          # paper value
+
+min_kd_pairs: 1
+min_cells_per_guide_vector: 20
+chunk_size: 8000                  # small chunks: 16 GB box, ~2.7 GB persistent accumulator
+n_top_features: 5000              # paper value (Codex mean-pop run used 1000)
+n_neighbors: 20
+seed_length: 5
+
+# Seed SEARCH window is +/-2 kb (paper Methods); the realized/potential
+# headline numbers are post-filtered to +/-1 kb downstream.
+promoter_upstream: 2000
+promoter_downstream: 2000
+n_seed_workers: 4

@@ -1,0 +1,28 @@
+name: vcp
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - python=3.10
+  - pip
+  - numpy
+  - pandas
+  - scipy
+  - scikit-learn
+  - statsmodels
+  - h5py
+  - pyarrow
+  - matplotlib
+  - seaborn
+  - numba
+  - llvmlite
+  - networkx
+  - tqdm
+  - pyyaml
+  - openpyxl
+  - pip:
+      - anndata==0.11.4
+      - scanpy==1.11.5
+      - umap-learn==0.5.12
+      - pynndescent==0.6.0
+      - torch==2.12.0

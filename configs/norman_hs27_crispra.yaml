@@ -1,0 +1,42 @@
+# Draft perturb_seed config for the Norman/Southard Hs27 CRISPRa atlas.
+# Do not execute until outputs/metrics/norman_crispra_reproduce_anchors.csv
+# records downstream_gate,PASS.
+
+dataset_name: norman_hs27_crispra
+mode: crispra
+
+adata_path: ../data/raw/fibroblast_CRISPRa_mean_pop.h5ad
+input_level: mean_pop
+sgrna_csv: ../guide_libraries/sgrna_norman.csv
+output_csv: ../outputs/candidates/norman_crispra_off_target_candidates.csv
+output_dir: ../outputs/candidates
+
+tss_map_csv: ../vendor/perturb_seed/tss_map.csv
+genome_fa: ../data/ref/hg38.fa
+genome_fai: ../data/ref/hg38.fa.fai
+
+obs_guide_col: guide_identity
+obs_gene_col: target_gene
+nt_label: off-target
+dataset_type: single_guide
+mean_pop_cell_count_col: cell_count
+
+# CRISPRa activation thresholds. These are draft defaults and must be
+# calibrated from the CRISPRa NTC null before downstream claims.
+kd_lfc_thresh: 0.5
+offtarget_lfc_thresh: 0.5
+filter_offtarget_effects: true
+log2fc_pseudocount: 0.1
+
+min_kd_pairs: 1
+min_cells_per_guide_vector: 20
+chunk_size: 20000
+n_top_features: 1000
+n_neighbors: 20
+seed_length: 10
+
+# Wide draft TSS window for initial seed search only. Do not interpret this as
+# a CRISPRi distance constant; distance effects require CRISPRa calibration.
+promoter_upstream: 2000
+promoter_downstream: 2000
+n_seed_workers: 8

@@ -1,0 +1,42 @@
+# Second cell type (RPE1) apples-to-apples CRISPRa run. Identical recipe to the
+# Hs27 single-cell config; only the data path / dataset name change. Used to test
+# context-dependence of seed off-target activation (finding b): same guide library,
+# different poised/chromatin landscape -> different realized off-target set predicted.
+# NOTE: verify obs schema (guide_identity / guide_target / control label "non") after
+# download; RPE1 mirrors Hs27 but confirm before trusting.
+
+dataset_name: rpe1_crispra_singlecell
+mode: crispra
+
+adata_path: ../data/raw_rpe1/RPE1_CRISPRa_final_population_singlets_normalized_log1p.h5ad
+input_level: single_cell
+expm1_input: true
+sgrna_csv: ../guide_libraries/sgrna_norman.csv   # same TF library; verify overlap
+output_csv: ../outputs/candidates/rpe1_crispra_singlecell_off_target_candidates.csv
+output_dir: ../outputs/candidates
+
+tss_map_csv: ../vendor/perturb_seed/tss_map.csv
+genome_fa: ../data/ref/hg38.fa
+genome_fai: ../data/ref/hg38.fa.fai
+
+obs_guide_col: guide_identity
+obs_gene_col: guide_target
+nt_label: "non"
+dataset_type: single_guide
+
+kd_lfc_thresh: 0.5
+offtarget_lfc_thresh: 0.5
+filter_offtarget_effects: false
+require_source_guide_effective: false
+log2fc_pseudocount: 0.01
+
+min_kd_pairs: 1
+min_cells_per_guide_vector: 20
+chunk_size: 8000
+n_top_features: 5000
+n_neighbors: 20
+seed_length: 5
+
+promoter_upstream: 2000
+promoter_downstream: 2000
+n_seed_workers: 4

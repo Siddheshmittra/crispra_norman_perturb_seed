@@ -1,0 +1,28 @@
+.DS_Store
+__pycache__/
+*.pyc
+.Rhistory
+
+.venv/
+NIHMS630425-supplement-10.xlsx
+
+# Regenerable analysis outputs: figures, metrics, intermediates (scripts/ regenerate
+# these from the AnnData objects + the gzipped candidate tables in data/).
+outputs/
+*.npz
+*.log
+
+# Large, reproducible local inputs.
+data/raw/
+data/ref/
+data/chromatin/
+data/raw_rpe1_crispri/
+
+# External source is recorded by URL/commit in the manifest instead of vendored.
+external/
+
+# Local reference copy of the CRISPRi Phase 0 source.
+src_phase0_reference/
+
+# Generated binary caches.
+vendor/perturb_seed/__pycache__/
